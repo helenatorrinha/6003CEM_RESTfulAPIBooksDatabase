@@ -1,4 +1,4 @@
-//const db = require('../helpers/database');
+const db = require('../helpers/database');
 
 // Gets all the books in the database
 exports.getAll = async function getAll () {
@@ -9,7 +9,7 @@ exports.getAll = async function getAll () {
 
 // Gets a single book by its id  
 exports.getById = async function getById (id) {
-  let query = "SELECT * FROM books WHERE ID = ?";
+  let query = "SELECT * FROM books WHERE book_id = ?";
   let values = [id];
   let data = await db.run_query(query, values);
   return data;
@@ -24,14 +24,14 @@ exports.add = async function add (book) {
 
 // Updates a book in the database
 exports.update = async function update (book, id) {
-  let query = "UPDATE books SET ? WHERE ID=?;";
+  let query = "UPDATE books SET ? WHERE book_id = ?;";
   let data = await db.run_query(query, [book, id]);
   return data;
 }
 
 // Deletes a book in the database
 exports.delete = async function deleteBook (id) {
-  let query = "DELETE FROM books WHERE ID=?;";
+  let query = "DELETE FROM books WHERE book_id = ?;";
   let data = await db.run_query(query, id);
   return data;
 }

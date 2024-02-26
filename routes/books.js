@@ -4,21 +4,15 @@ const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/books'}); // Define the route prefix
 const model = require('../models/books');
 
-let books = [
-  {title:'hello article', fullText:'some text here to fill the body'},
-  {title:'another article', fullText:'again here is some text here to fill'},
-  {title:'coventry university ', fullText:'some news about coventry university'}
-];  
-
 // Routes 
 router.get('/', getAll);  
 router.post('/', bodyParser(), createBook);  
 router.get('/:id([0-9]{1,})', getById);
-router.put('/:id([0-9]{1,})', updateBook);  
+router.put('/:id([0-9]{1,})', bodyParser(), updateBook);  
 router.del('/:id([0-9]{1,})', deleteBook);  
 
 // Function to get all the books
-async function getAll(cnx, next){  
+async function getAll(ctx){  
     let books = await model.getAll();
     if (books.length) {
       ctx.status = 200; // OK
@@ -58,7 +52,8 @@ async function createBook(ctx) {
 // Function to update a book in the database
 async function updateBook(ctx) {
   const body = ctx.request.body;
-  let result = await model.update(body);
+  const id = ctx.params.id;
+  let result = await model.update(body, id);
   if (result) {
     ctx.status = 201;
     ctx.body = {message: "Update successful"}
