@@ -1,4 +1,6 @@
 const db = require('../helpers/database');
+const bcrypt = require ('bcrypt');
+const saltRounds = 10;
 
 // Gets all the users in the database
 exports.getAll = async function getAll () {
@@ -17,6 +19,7 @@ exports.getById = async function getById (id) {
 
 // Adds a new user in the database
 exports.add = async function add (user) {
+  user.password = await bcrypt.hash(user.password, saltRounds)
   let query = "INSERT INTO users SET ?";
   let data = await db.run_query(query, user);
   return data;
@@ -36,4 +39,10 @@ exports.delete = async function deleteUser (id) {
   return data;
 }
 
+// Gets a single user by the (unique) username
+exports.findByUsername = async function getByUsername(username) {
+  const query = "SELECT * FROM users WHERE username = ?;";
+  const user = await db.run_query(query, username);
+  return user;
+}
   
