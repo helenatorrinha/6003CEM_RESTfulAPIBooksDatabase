@@ -3,11 +3,15 @@ const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/users'}); // Define the route prefix
 const model = require('../models/users');
 
+// Validation functions
+const { validateUser } = require('../controllers/validation');
+const { validateUserUpdate } = require('../controllers/validation');
+
 // Routes 
 router.get('/', getAll);  
 router.get('/:id([0-9]{1,})', getById);
-router.post('/', bodyParser(), createUser);  
-router.put('/:id([0-9]{1,})', bodyParser(), updateUser);  
+router.post('/', bodyParser(), validateUser, createUser);  
+router.put('/:id([0-9]{1,})', bodyParser(), validateUserUpdate, updateUser);  
 router.del('/:id([0-9]{1,})', deleteUser);  
 
 // Function to get all the users

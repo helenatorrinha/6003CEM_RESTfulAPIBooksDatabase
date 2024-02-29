@@ -1,0 +1,110 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "user": {
+            "id": "/user",
+            "title": "User",
+            "description": "An user of the books' database",
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "description": "The first name of the user",
+                    "type": "string"
+                },
+                "lastName": {
+                    "description": "The last name of the user",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The username of the user",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The password of the user",
+                    "type": "string",
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "The email of the user",
+                    "type": "string"
+                },
+                "avatarURL": {
+                    "description": "URL for the image of the user",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "firstName",
+                "lastName",
+                "username",
+                "password",
+                "email"
+            ],
+            "additionalProperties": false
+        },
+        "userCreated": {
+            "id": "/userCreated",
+            "title": "User Created",
+            "description": "The confirmation of the creation of a new user",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "The id of the new user",
+                    "type": "integer"
+                }
+            }
+        },
+        "userUpdate": {
+            "id": "/user/[id]",
+            "title": "User Update",
+            "description": "Update the user's information",
+            "type": "object",
+            "properties": {
+                "firstName": {
+                    "description": "The first name of the user",
+                    "type": "string"
+                },
+                "lastName": {
+                    "description": "The last name of the user",
+                    "type": "string"
+                },
+                "username": {
+                    "description": "The username of the user",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "The password of the user",
+                    "type": "string",
+                    "minLength": 6
+                },
+                "email": {
+                    "description": "The email of the user",
+                    "type": "string"
+                },
+                "avatarURL": {
+                    "description": "URL for the image of the user",
+                    "type": "string"
+                },
+                "role": {
+                    "description": "Role of the user",
+                    "type": "string",
+                    "enum": ["user", "admin"]
+            },
+            "additionalProperties": false
+        }
+        
+        },
+        "userUpdated": {
+            "id": "/userUpdated",
+            "title": "User Updated",
+            "description": "The confirmation of the update of the user's information",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "id of the updated user record",
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}

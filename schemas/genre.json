@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": { 
+      "genre": {
+        "id": "/genre",
+        "title": "Genre",
+        "description": "A genre of books",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the genre",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description of the genre",
+            "type": "string"
+          }
+        },
+        "required": [
+            "name"
+        ],
+        "additionalProperties": false
+      },
+      "genreCreated": {
+        "id": "/genreCreated",
+        "title": "Genre Created",
+        "description": "The confirmation of the creation of a new genre",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "The id of the new genre",
+                "type": "integer"
+            }
+        }
+      },
+      "genreUpdate": {
+        "id": "/genre/[id]",
+        "title": "Genre Update",
+        "description": "Update the genre's information",
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the genre",
+            "type": "string"
+          },
+          "description": {
+            "description": "Description of the genre",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "genreUpdated": {
+        "id": "/genreUpdated",
+        "title": "Genre Updated",
+        "description": "The confirmation of the update of the genre's information",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "id of the updated genre record",
+                "type": "integer"
+            }
+        }
+      }
+    }
+  }

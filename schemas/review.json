@@ -1,0 +1,76 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": { 
+      "review": {
+        "id": "/review",
+        "title": "Review",
+        "description": "A review of a book in the database",
+        "type": "object",
+        "properties": {
+          "book_id": {
+            "description": "The ID of the book being reviewed",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "The ID of the user who wrote the review",
+            "type": "string"
+          },
+          "comment": {
+            "description": "The review comment",
+            "type": "string"
+          }
+        },
+        "required": [
+            "book_id",
+            "user_id",
+            "comment"
+        ],
+        "additionalProperties": false
+      },
+      "reviewCreated": {
+        "id": "/reviewCreated",
+        "title": "Review Created",
+        "description": "The confirmation of the creation of a new review",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "The id of the new review",
+                "type": "integer"
+            }
+        }
+      },
+      "reviewUpdate": {
+        "id": "/review/[id]",
+        "title": "Review Update",
+        "description": "Update the review's information",
+        "type": "object",
+        "properties": {
+          "book_id": {
+            "description": "The ID of the book being reviewed",
+            "type": "string"
+          },
+          "user_id": {
+            "description": "The ID of the user who wrote the review",
+            "type": "string"
+          },
+          "comment": {
+            "description": "The review comment",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "reviewUpdated": {
+        "id": "/reviewUpdated",
+        "title": "Review Updated",
+        "description": "The confirmation of the update of the review's information",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "id of the updated review record",
+                "type": "integer"
+            }
+        }
+      }
+    }
+  }

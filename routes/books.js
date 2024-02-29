@@ -4,11 +4,15 @@ const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/books'}); // Define the route prefix
 const model = require('../models/books');
 
+// Validation functions
+const { validateBook } = require('../controllers/validation');
+const { validateBookUpdate } = require('../controllers/validation');
+
 // Routes 
 router.get('/', getAll);  
-router.post('/', bodyParser(), createBook);  
+router.post('/', bodyParser(), validateBook, createBook);  
 router.get('/:id([0-9]{1,})', getById);
-router.put('/:id([0-9]{1,})', bodyParser(), updateBook);  
+router.put('/:id([0-9]{1,})', bodyParser(), validateBookUpdate, updateBook);  
 router.del('/:id([0-9]{1,})', deleteBook);  
 
 // Function to get all the books

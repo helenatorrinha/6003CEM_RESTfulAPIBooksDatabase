@@ -3,11 +3,15 @@ const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/reviews'}); // Define the route prefix
 const model = require('../models/reviews');
 
+// Validation functions
+const { validateReview } = require('../controllers/validation');
+const { validateReviewUpdate } = require('../controllers/validation');
+
 // Routes 
-router.post('/', bodyParser(), createReview);  
+router.post('/', bodyParser(), validateReview, createReview);  
 router.get('/', getAll); 
 router.get('/:id([0-9]{1,})', getReviewsByBookId);
-router.put('/:id([0-9]{1,})', bodyParser(), updateReview);  
+router.put('/:id([0-9]{1,})', bodyParser(), validateReviewUpdate, updateReview);  
 router.del('/:id([0-9]{1,})', deleteReview);  
 
 // Function to get all the reviews

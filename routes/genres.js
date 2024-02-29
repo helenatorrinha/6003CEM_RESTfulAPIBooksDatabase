@@ -3,11 +3,15 @@ const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/genres'}); // Define the route prefix
 const model = require('../models/genres');
 
+// Validation functions
+const { validateGenre } = require('../controllers/validation');
+const { validateGenreUpdate } = require('../controllers/validation');
+
 // Routes 
 router.get('/', getAll);  
-router.post('/', bodyParser(), createGenre);  
+router.post('/', bodyParser(), validateGenre, createGenre);  
 router.get('/:id([0-9]{1,})', getById);
-router.put('/:id([0-9]{1,})', bodyParser(), updateGenre);  
+router.put('/:id([0-9]{1,})', bodyParser(), validateGenreUpdate, updateGenre);  
 router.del('/:id([0-9]{1,})', deleteGenre);  
 
 // Function to get all the genres

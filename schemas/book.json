@@ -1,0 +1,112 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "definitions": {
+    "book": {
+      "id": "/book",
+      "title": "Book",
+      "description": "A book in the database",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of the book",
+          "type": "string"
+        },
+        "author_id": {
+          "description": "The author of the book",
+          "type": "integer"
+        },
+        "genre_id": {
+          "description": "The genre of the book",
+          "type": "integer"
+        },
+        "publication_date": {
+          "description": "When the book was published",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "description": "Description of the book",
+          "type": "string"
+        },
+        "ISBN": {
+          "description": "ISBN of the book",
+          "type": "integer"
+        },
+        "imageURL": {
+          "description": "URL for the image of the book",
+          "type": "string"
+        }
+      },
+      "required": [
+          "title",
+          "author_id",
+          "genre_id",
+          "publication_date",
+          "ISBN"
+      ],
+      "additionalProperties": false
+    },
+    "bookCreated": {
+      "id": "/bookCreated",
+      "title": "Book Created",
+      "description": "The confirmation of the creation of a new book",
+      "type": "object",
+      "properties": {
+          "id": {
+              "description": "The id of the new book",
+              "type": "integer"
+          }
+      }
+    },
+    "bookUpdate": {
+      "id": "/book/[id]",
+      "title": "Book Update",
+      "description": "Update the book's information",
+      "type": "object",
+      "properties": {
+        "title": {
+          "description": "The title of the book",
+          "type": "string"
+        },
+        "author_id": {
+          "description": "The author of the book",
+          "type": "integer"
+        },
+        "genre_id": {
+          "description": "The genre of the book",
+          "type": "integer"
+        },
+        "publication_date": {
+          "description": "When the book was published",
+          "type": "string",
+          "format": "date-time"
+        },
+        "description": {
+          "description": "Description of the book",
+          "type": "string"
+        },
+        "ISBN": {
+          "description": "ISBN of the book",
+          "type": "integer"
+        },
+        "imageURL": {
+          "description": "URL for the image of the book",
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "bookUpdated": {
+      "id": "/bookUpdated",
+      "title": "Book Updated",
+      "description": "The confirmation of the update of the book's information",
+      "type": "object",
+      "properties": {
+          "id": {
+              "description": "id of the updated book record",
+              "type": "integer"
+          }
+      }
+    }
+  }
+}
