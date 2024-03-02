@@ -9,11 +9,11 @@
         "properties": {
           "book_id": {
             "description": "The ID of the book being reviewed",
-            "type": "string"
+            "type": "integer"
           },
           "user_id": {
             "description": "The ID of the user who wrote the review",
-            "type": "string"
+            "type": "integer"
           },
           "comment": {
             "description": "The review comment",
@@ -47,11 +47,11 @@
         "properties": {
           "book_id": {
             "description": "The ID of the book being reviewed",
-            "type": "string"
+            "type": "integer"
           },
           "user_id": {
             "description": "The ID of the user who wrote the review",
-            "type": "string"
+            "type": "integer"
           },
           "comment": {
             "description": "The review comment",

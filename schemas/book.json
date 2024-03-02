@@ -22,7 +22,7 @@
         "publication_date": {
           "description": "When the book was published",
           "type": "string",
-          "format": "date-time"
+          "format": "date"
         },
         "description": {
           "description": "Description of the book",
@@ -79,7 +79,7 @@
         "publication_date": {
           "description": "When the book was published",
           "type": "string",
-          "format": "date-time"
+          "format": "date"
         },
         "description": {
           "description": "Description of the book",
