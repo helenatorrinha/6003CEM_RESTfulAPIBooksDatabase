@@ -19,6 +19,7 @@ router.del('/:id([0-9]{1,})', auth, deleteBook);
 
 // Function to get all the books
 async function getAll(ctx){  
+  try {
     let books = await model.getAll();
     if (books.length) {
       ctx.status = 200; // OK
@@ -27,77 +28,109 @@ async function getAll(ctx){
     else {
       ctx.status = 404; // Not found
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the books' };
+  }
 }  
 
 // Function to get a single book by its id
 async function getById(ctx) {
-  let id = ctx.params.id;
-  let book = await model.getById(id);
-  if (book.length) {
-    
-    ctx.body = book[0];
+  try {
+    let id = ctx.params.id;
+    let book = await model.getById(id);
+    if (book.length) {
+      
+      ctx.body = book[0];
+    }
+    else {
+      ctx.status = 404; // Not found
+    }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the book' };
   }
-  else {
-    ctx.status = 404; // Not found
-  }
+  
 }
 
 // Function to add a new book in the database
 async function createBook(ctx) {
-  const permission = can.create(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-    return;
-  }
-  else { 
-    const body = ctx.request.body;
-    let result = await model.add(body);
-    if (result) {
-      ctx.status = 201; // Created
-      ctx.body = {ID: result.insertId}
+  try {
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
+      return;
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      const body = ctx.request.body;
+      let result = await model.add(body);
+      if (result) {
+        ctx.status = 201; // Created
+        ctx.body = {ID: result.insertId}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to add the book' };
   }
+  
 }
 
 // Function to update a book in the database
 async function updateBook(ctx) {
-  const permission = can.update(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    const body = ctx.request.body;
-    const id = ctx.params.id;
-    let result = await model.update(body, id);
-    if (result) {
-      ctx.status = 200; // OK
-      ctx.body = {message: "Update successful"}
+  try {
+    const permission = can.update(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      const body = ctx.request.body;
+      const id = ctx.params.id;
+      let result = await model.update(body, id);
+      if (result) {
+        ctx.status = 200; // OK
+        ctx.body = {message: "Update successful"}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to update the book' };
   }
+  
 }
 
 // Function to delete a book in the database
 async function deleteBook(ctx) {
-  const permission = can.delete(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    let id = ctx.params.id;
-    let result = await model.delete(id);
-    if (result) {
-      ctx.status = 200; // OK
-      ctx.body = {message: "Delete successful"}
+  try {
+    const permission = can.delete(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      let id = ctx.params.id;
+      let result = await model.delete(id);
+      if (result) {
+        ctx.status = 200; // OK
+        ctx.body = {message: "Delete successful"}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to delete the book' };
   }
 }
 

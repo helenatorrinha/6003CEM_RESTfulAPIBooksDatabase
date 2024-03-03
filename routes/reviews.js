@@ -18,6 +18,7 @@ router.del('/:id([0-9]{1,})', auth, deleteReview);
 
 // Function to get all the reviews
 async function getAll(ctx){  
+  try {
     let reviews = await model.getAll();
     if (reviews.length) {
       ctx.status = 200; // OK
@@ -26,91 +27,121 @@ async function getAll(ctx){
     else {
       ctx.status = 404; // Not found
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the reviews' };
+  }
 }  
 
 // Function to get all the reviews for a book using its id
 async function getReviewsByBookId(ctx) {
-  let bookId = ctx.params.id;
-  let reviews = await model.getReviewsByBookId(bookId);
-  if (reviews.length) {
-    ctx.body = reviews;
-  }
-  else {
-    ctx.status = 404; // Not found
+  try {
+    let bookId = ctx.params.id;
+    let reviews = await model.getReviewsByBookId(bookId);
+    if (reviews.length) {
+      ctx.body = reviews;
+    }
+    else {
+      ctx.status = 404; // Not found
+    }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the reviews' };
   }
 }
 
 // Function to add a new author in the database
 async function createReview(ctx) {
-  const permission = can.create(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    const body = ctx.request.body;
-    let result = await model.add(body);
-    if (result) {
-      ctx.status = 201; // Created
-      ctx.body = {ID: result.insertId}
+  try {
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      const body = ctx.request.body;
+      let result = await model.add(body);
+      if (result) {
+        ctx.status = 201; // Created
+        ctx.body = {ID: result.insertId}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to add the review' };
   }
 }
 
 // Function to update a review in the database
 async function updateReview(ctx) {
-  const reviewId = ctx.params.id;
-  const review = await model.getReviewById(reviewId); // Get the review from the model
-  if (!review) { // If the review is not found
-    ctx.status = 404; // Not found
-    ctx.body = {message: "Review not found."};
-    return;
-  }
-  const permission = can.update(ctx.state.user, review.user_id);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else {
-    const body = ctx.request.body;
-    let result = await model.update(body, reviewId);
-    if (result) {
-      ctx.status = 200; // OK
-      ctx.body = {message: "Update successful"}
+  try {
+    const reviewId = ctx.params.id;
+    const review = await model.getReviewById(reviewId); // Get the review from the model
+    if (!review) { // If the review is not found
+      ctx.status = 404; // Not found
+      ctx.body = {message: "Review not found."};
+      return;
+    }
+    const permission = can.update(ctx.state.user, review.user_id);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
     else {
-      ctx.status = 400; // Bad request
+      const body = ctx.request.body;
+      let result = await model.update(body, reviewId);
+      if (result) {
+        ctx.status = 200; // OK
+        ctx.body = {message: "Update successful"}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to update the review' };
   }
 }
 
 // Function to delete an review in the database
 async function deleteReview(ctx) {
-  const reviewId = ctx.params.id;
-  const review = await model.getReviewById(reviewId); // Get the review from the model
-  if (!review) { // If the review is not found
-    ctx.status = 404; // Not found
-    ctx.body = {message: "Review not found."};
-    return;
-  }
-  const permission = can.delete(ctx.state.user, parseInt(review.user_id));
-  console.log(reviewId);
-  console.log(review);
-  console.log(permission);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else {
-    let result = await model.delete(reviewId);
-    if (result) {
-      ctx.status = 200; // OK
-      ctx.body = {message: "Delete successful"}
+  try {
+    const reviewId = ctx.params.id;
+    const review = await model.getReviewById(reviewId); // Get the review from the model
+    if (!review) { // If the review is not found
+      ctx.status = 404; // Not found
+      ctx.body = {message: "Review not found."};
+      return;
+    }
+    const permission = can.delete(ctx.state.user, parseInt(review.user_id));
+    console.log(reviewId);
+    console.log(review);
+    console.log(permission);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
     else {
-      ctx.status = 400; // Bad request
+      let result = await model.delete(reviewId);
+      if (result) {
+        ctx.status = 200; // OK
+        ctx.body = {message: "Delete successful"}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to delete the review' };
   }
+  
 }
 
 module.exports = router;

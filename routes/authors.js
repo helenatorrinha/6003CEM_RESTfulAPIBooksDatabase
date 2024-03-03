@@ -18,6 +18,7 @@ router.del('/:id([0-9]{1,})', auth, deleteAuthor);
 
 // Function to get all the authors
 async function getAll(ctx){  
+  try {
     let authors = await model.getAll();
     if (authors.length) {
       ctx.status = 200; // OK
@@ -26,77 +27,109 @@ async function getAll(ctx){
     else {
       ctx.status = 404; // Not found
     }
+  }
+  catch (err) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the users' };
+  }  
 }  
 
 // Function to get a single author by its id
 async function getById(ctx) {
-  let id = ctx.params.id;
-  let author = await model.getById(id);
-  if (author.length) {
-    
-    ctx.body = author[0];
+  try {
+    let id = ctx.params.id;
+    let author = await model.getById(id);
+    if (author.length) {
+      
+      ctx.body = author[0];
+    }
+    else {
+      ctx.status = 404; // Not found
+    }
+  } catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to retrieve the user' };
   }
-  else {
-    ctx.status = 404; // Not found
-  }
+  
 }
 
 // Function to add a new author in the database
 async function createAuthor(ctx) {
-  const permission = can.create(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    const body = ctx.request.body;
-    let result = await model.add(body);
-    if (result) {
-      ctx.status = 201; // Created
-      ctx.body = {ID: result.insertId}
+  try {
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      const body = ctx.request.body;
+      let result = await model.add(body);
+      if (result) {
+        ctx.status = 201; // Created
+        ctx.body = {ID: result.insertId}
+      }
+      else {
+        ctx.status = 404; // Not found
+      }
     }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to add the user' };
   }
+  
 }
 
 // Function to update an author in the database
 async function updateAuthor(ctx) {
-  const permission = can.update(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    const body = ctx.request.body;
-    const id = ctx.params.id;
-    let result = await model.update(body, id);
-    if (result) {
-      ctx.status = 200; // OK
-      ctx.body = {message: "Update successful"}
+  try {
+    const permission = can.update(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
     }
-    else {
-      ctx.status = 400; // Bad request
-    }
-  }
-}
-
-// Function to delete an author in the database
-async function deleteAuthor(ctx) {
-  const permission = can.delete(ctx.state.user);
-  if (!permission.granted) {
-    ctx.status = 403; // Forbidden
-  }
-  else { 
-    let id = ctx.params.id;
-    let result = await model.delete(id);
+    else { 
+      const body = ctx.request.body;
+      const id = ctx.params.id;
+      let result = await model.update(body, id);
       if (result) {
         ctx.status = 200; // OK
-        ctx.body = {message: "Delete successful"}
+        ctx.body = {message: "Update successful"}
       }
       else {
         ctx.status = 400; // Bad request
       }
+    }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to update the user' };
   }
+  
+}
+
+// Function to delete an author in the database
+async function deleteAuthor(ctx) {
+  try {
+    const permission = can.delete(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
+    }
+    else { 
+      let id = ctx.params.id;
+      let result = await model.delete(id);
+        if (result) {
+          ctx.status = 200; // OK
+          ctx.body = {message: "Delete successful"}
+        }
+        else {
+          ctx.status = 400; // Bad request
+        }
+    }
+  } 
+  catch (error) {
+    ctx.status = 500; // Internal server error
+    ctx.body = { error: 'Failed to delete the user' };
+  }
+  
 }
 
 module.exports = router;
