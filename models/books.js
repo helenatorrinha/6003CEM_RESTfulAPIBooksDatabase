@@ -26,14 +26,14 @@ exports.add = async function add (book) {
 exports.update = async function update (book, id) {
   let query = "UPDATE books SET ? WHERE book_id = ?;";
   let data = await db.run_query(query, [book, id]);
-  return data;
+  return data.affectedRows;
 }
 
 // Deletes a book in the database
 exports.delete = async function deleteBook (id) {
   let query = "DELETE FROM books WHERE book_id = ?;";
   let data = await db.run_query(query, id);
-  return data;
+  return data.affectedRows;
 }
 
   

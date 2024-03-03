@@ -29,7 +29,7 @@ exports.add = async function add (user) {
 exports.update = async function update (user, id) {
   let query = "UPDATE users SET ? WHERE user_id = ?;";
   let data = await db.run_query(query, [user, id]);
-  return data;
+  return data.affectedRows;
 }
 
 // Deletes a user in the database
