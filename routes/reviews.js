@@ -43,7 +43,6 @@ async function getReviewsByBookId(ctx) {
 // Function to add a new author in the database
 async function createReview(ctx) {
   const permission = can.create(ctx.state.user);
-  console.log(permission);
   if (!permission.granted) {
     ctx.status = 403; // Forbidden
   }

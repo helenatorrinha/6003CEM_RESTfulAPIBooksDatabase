@@ -3,6 +3,8 @@ const Router = require('koa-router'); // Import the koa-router (to parse request
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/books'}); // Define the route prefix
 const model = require('../models/books');
+const can = require('../permissions/books');
+const auth = require('../controllers/auth');
 
 // Validation functions
 const { validateBook } = require('../controllers/validation');
@@ -10,10 +12,10 @@ const { validateBookUpdate } = require('../controllers/validation');
 
 // Routes 
 router.get('/', getAll);  
-router.post('/', bodyParser(), validateBook, createBook);  
+router.post('/', bodyParser(), auth, validateBook, createBook);  
 router.get('/:id([0-9]{1,})', getById);
-router.put('/:id([0-9]{1,})', bodyParser(), validateBookUpdate, updateBook);  
-router.del('/:id([0-9]{1,})', deleteBook);  
+router.put('/:id([0-9]{1,})', bodyParser(), auth, validateBookUpdate, updateBook);  
+router.del('/:id([0-9]{1,})', auth, deleteBook);  
 
 // Function to get all the books
 async function getAll(ctx){  
@@ -42,43 +44,61 @@ async function getById(ctx) {
 
 // Function to add a new book in the database
 async function createBook(ctx) {
-  const body = ctx.request.body;
-  let result = await model.add(body);
-  if (result) {
-    ctx.status = 201;
-    ctx.body = {ID: result.insertId}
+  const permission = can.create(ctx.state.user);
+  if (!permission.granted) {
+    ctx.status = 403; // Forbidden
+    return;
   }
-  else {
-    ctx.status = 400; // Bad request
+  else { 
+    const body = ctx.request.body;
+    let result = await model.add(body);
+    if (result) {
+      ctx.status = 201; // Created
+      ctx.body = {ID: result.insertId}
+    }
+    else {
+      ctx.status = 400; // Bad request
+    }
   }
 }
 
 // Function to update a book in the database
 async function updateBook(ctx) {
-  const body = ctx.request.body;
-  const id = ctx.params.id;
-  let result = await model.update(body, id);
-  if (result) {
-    ctx.status = 201;
-    ctx.body = {message: "Update successful"}
+  const permission = can.update(ctx.state.user);
+  if (!permission.granted) {
+    ctx.status = 403; // Forbidden
   }
-  else {
-    ctx.status = 400; // Bad request
+  else { 
+    const body = ctx.request.body;
+    const id = ctx.params.id;
+    let result = await model.update(body, id);
+    if (result) {
+      ctx.status = 200; // OK
+      ctx.body = {message: "Update successful"}
+    }
+    else {
+      ctx.status = 400; // Bad request
+    }
   }
-  
 }
 
 // Function to delete a book in the database
 async function deleteBook(ctx) {
-  let id = ctx.params.id;
-  let result = await model.delete(id);
+  const permission = can.delete(ctx.state.user);
+  if (!permission.granted) {
+    ctx.status = 403; // Forbidden
+  }
+  else { 
+    let id = ctx.params.id;
+    let result = await model.delete(id);
     if (result) {
-      ctx.status = 201;
+      ctx.status = 200; // OK
       ctx.body = {message: "Delete successful"}
     }
     else {
       ctx.status = 400; // Bad request
     }
+  }
 }
 
 module.exports = router;

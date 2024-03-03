@@ -33,7 +33,8 @@ exports.update = async function update (author, id) {
 exports.delete = async function deleteAuthor (id) {
   let query = "DELETE FROM authors WHERE author_id = ?;";
   let data = await db.run_query(query, id);
-  return data;
+  console.log(data);
+  return data.affectedRows;
 }
 
   
