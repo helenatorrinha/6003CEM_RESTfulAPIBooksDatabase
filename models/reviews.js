@@ -36,4 +36,9 @@ exports.delete = async function deleteReview (id) {
   return data;
 }
 
-  
+// Gets the owner of a review
+exports.getReviewById = async function getReviewOwner (id) {
+  let query = "SELECT user_id FROM reviews WHERE review_id = ?;";
+  let data = await db.run_query(query, id);
+  return data[0];
+}

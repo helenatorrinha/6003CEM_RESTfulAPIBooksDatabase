@@ -72,7 +72,7 @@ async function updateUser(ctx) {
   const id = ctx.params.id;
   const permission = can.update(ctx.state.user, parseInt(id));
   if (!permission.granted) {
-    ctx.status = 403;
+    ctx.status = 403; // Forbidden
   }
   else { 
     const body = ctx.request.body;
