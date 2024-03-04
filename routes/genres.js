@@ -2,6 +2,8 @@ const Router = require('koa-router'); // Import the koa-router (to parse request
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/genres'}); // Define the route prefix
 const model = require('../models/genres');
+const can = require('../permissions/genres');
+const auth = require('../controllers/auth');
 
 // Validation functions
 const { validateGenre } = require('../controllers/validation');
@@ -9,10 +11,10 @@ const { validateGenreUpdate } = require('../controllers/validation');
 
 // Routes 
 router.get('/', getAll);  
-router.post('/', bodyParser(), validateGenre, createGenre);  
+router.post('/', bodyParser(), auth, validateGenre, createGenre);  
 router.get('/:id([0-9]{1,})', getById);
-router.put('/:id([0-9]{1,})', bodyParser(), validateGenreUpdate, updateGenre);  
-router.del('/:id([0-9]{1,})', deleteGenre);  
+router.put('/:id([0-9]{1,})', bodyParser(), auth, validateGenreUpdate, updateGenre);  
+router.del('/:id([0-9]{1,})', auth, deleteGenre);  
 
 // Function to get all the genres
 async function getAll(ctx){  
@@ -38,7 +40,7 @@ async function getById(ctx) {
     let id = ctx.params.id;
     let genre = await model.getById(id);
     if (genre.length) {
-      
+      ctx.status = 200; // OK
       ctx.body = genre[0];
     }
     else {
@@ -54,14 +56,21 @@ async function getById(ctx) {
 // Function to add a new genre in the database
 async function createGenre(ctx) {
   try {
-    const body = ctx.request.body;
-    let result = await model.add(body);
-    if (result) {
-      ctx.status = 201;
-      ctx.body = {ID: result.insertId}
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
+      return;
     }
-    else {
-      ctx.status = 400; // Bad request
+    else { 
+      const body = ctx.request.body;
+      let result = await model.add(body);
+      if (result) {
+        ctx.status = 201; // Created
+        ctx.body = {ID: result.insertId}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
   } 
   catch (error) {
@@ -73,15 +82,22 @@ async function createGenre(ctx) {
 // Function to update an genre in the database
 async function updateGenre(ctx) {
   try {
-    const body = ctx.request.body;
-    const id = ctx.params.id;
-    let result = await model.update(body, id);
-    if (result) {
-      ctx.status = 201;
-      ctx.body = {message: "Update successful"}
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
+      return;
     }
     else {
-      ctx.status = 400; // Bad request
+      const body = ctx.request.body;
+      const id = ctx.params.id;
+      let result = await model.update(body, id);
+      if (result) {
+        ctx.status = 200; // OK
+        ctx.body = {message: "Update successful"}
+      }
+      else {
+        ctx.status = 400; // Bad request
+      }
     }
   } 
   catch (error) {
@@ -93,15 +109,22 @@ async function updateGenre(ctx) {
 // Function to delete an genre in the database
 async function deleteGenre(ctx) {
   try {
-    let id = ctx.params.id;
-    let result = await model.delete(id);
-      if (result) {
-        ctx.status = 201;
-        ctx.body = {message: "Delete successful"}
-      }
-      else {
-        ctx.status = 400; // Bad request
-      }
+    const permission = can.create(ctx.state.user);
+    if (!permission.granted) {
+      ctx.status = 403; // Forbidden
+      return;
+    }
+    else {
+      let id = ctx.params.id;
+      let result = await model.delete(id);
+        if (result) {
+          ctx.status = 200; // OK
+          ctx.body = {message: "Delete successful"}
+        }
+        else {
+          ctx.status = 400; // Bad request
+        }
+    }
   } 
   catch (error) {
     ctx.status = 500; // Internal server error

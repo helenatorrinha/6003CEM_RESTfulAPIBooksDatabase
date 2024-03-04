@@ -40,6 +40,7 @@ async function getReviewsByBookId(ctx) {
     let bookId = ctx.params.id;
     let reviews = await model.getReviewsByBookId(bookId);
     if (reviews.length) {
+      ctx.status = 200; // OK
       ctx.body = reviews;
     }
     else {
@@ -120,9 +121,6 @@ async function deleteReview(ctx) {
       return;
     }
     const permission = can.delete(ctx.state.user, parseInt(review.user_id));
-    console.log(reviewId);
-    console.log(review);
-    console.log(permission);
     if (!permission.granted) {
       ctx.status = 403; // Forbidden
     }
@@ -141,7 +139,6 @@ async function deleteReview(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the review' };
   }
-  
 }
 
 module.exports = router;

@@ -53,6 +53,7 @@ async function getById(ctx) {
     {
       let user = await model.getById(id); // Get the user from the model
       if (user.length) { // If some result is returned
+        ctx.status = 200; // OK
         ctx.body = user[0]; // Return the user
       }
       else {
@@ -117,12 +118,12 @@ async function deleteUser(ctx) {
     let id = ctx.params.id;
     const permission = can.delete(ctx.state.user, parseInt(id));
     if (!permission.granted) {
-      ctx.status = 403;
+      ctx.status = 403; // Forbidden
     }
     else { 
       let result = await model.delete(id);
       if (result) {
-        ctx.status = 201;
+        ctx.status = 200; // OK 
         ctx.body = {message: "Delete successful"}
       }
       else {

@@ -40,7 +40,7 @@ async function getById(ctx) {
     let id = ctx.params.id;
     let author = await model.getById(id);
     if (author.length) {
-      
+      ctx.status = 200; // OK
       ctx.body = author[0];
     }
     else {

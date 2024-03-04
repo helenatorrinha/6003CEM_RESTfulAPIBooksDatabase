@@ -41,7 +41,7 @@ async function getById(ctx) {
     let id = ctx.params.id;
     let book = await model.getById(id);
     if (book.length) {
-      
+      ctx.status = 200; // OK
       ctx.body = book[0];
     }
     else {
@@ -52,7 +52,6 @@ async function getById(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the book' };
   }
-  
 }
 
 // Function to add a new book in the database
@@ -79,7 +78,6 @@ async function createBook(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the book' };
   }
-  
 }
 
 // Function to update a book in the database
