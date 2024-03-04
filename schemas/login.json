@@ -1,0 +1,35 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "definitions": {
+        "login": {
+            "id": "/login",
+            "title": "Login",
+            "description": "login route",
+            "type": "object",
+            "properties": {
+                "username": {
+                    "description": "username",
+                    "type": "string"
+                },
+                "password": {
+                    "description": "password",
+                    "type": "string"
+                }
+            },
+            "required": ["username", "password"],
+            "additionalProperties": false
+        },
+        "loggedIn": {
+            "id": "/loggedIn",
+            "title": "Login Success",
+            "description": "Confirmation of login",
+            "type": "object",
+            "properties": {
+                "token": {
+                    "description": "jwt token",
+                    "type": "string"
+                }
+            }            
+        }
+    }
+}

@@ -88,3 +88,15 @@ exports.findByUsername = async function getByUsername(username) {
   return user;
 }
   
+/** Gets a user given its username
+ * @async
+ * @param {string} username - The username of the user to retrieve
+ * @returns {Promise<Array>} A promise to the user
+ * @throws {Error} Throws an error if the query fails
+ */
+exports.findUserByUsername = async function getByUsername (username) {
+  const query = "SELECT * FROM users WHERE username = ?";
+  const value = [username];
+  const user = await db.run_query(query, value);
+  return user;
+}  

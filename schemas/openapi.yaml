@@ -23,6 +23,8 @@ tags:
     description: API endpoints for review management.
   - name: Users
     description: API endpoints for user management.
+  - name: Login
+    description: User login.
 paths:
   /authors/:
     get:
@@ -448,3 +450,27 @@ paths:
           description: User not found in the database.
         '500':
           description: Server error.
+  /login:
+      post:
+        tags:
+          - Login
+        description:
+          Login to the system.
+        requestBody:
+          description: User login information
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: ./login.json#/definitions/login
+        responses:
+          '200':
+            description: User logged in successfully.
+            content:
+              application/json:
+                schema:
+                  $ref: ./login.json#/definitions/loggedIn
+          '401':
+            description: User login failed.
+          '500':
+            description: Internal server error.

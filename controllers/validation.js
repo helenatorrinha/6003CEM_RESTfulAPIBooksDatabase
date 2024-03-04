@@ -10,6 +10,7 @@ const { book: bookSchema, bookUpdate: bookUpdateSchema } = require('../schemas/b
 const { genre: genreSchema, genreUpdate: genreUpdateSchema } = require('../schemas/genre.json').definitions;
 const { review: reviewSchema, reviewUpdate: reviewUpdateSchema } = require('../schemas/review.json').definitions;
 const { user: userSchema, userUpdate: userUpdateSchema } = require('../schemas/user.json').definitions;
+const { login: loginSchema } = require('../schemas/login.json').definitions;
 
 const v = new Validator();
 
@@ -91,3 +92,7 @@ exports.validateUserUpdate = async (ctx, next) => {
   await validate(ctx, next, userUpdateSchema)
 }
 
+/** Validate data against login schema */
+exports.validateLogin = async (ctx, next) => {
+  await validate(ctx, next, loginSchema)
+}
