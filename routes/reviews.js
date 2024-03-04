@@ -1,3 +1,18 @@
+/**
+ * @module routes/reviews
+ * @description API routes for managing reviews, providing CRUD operations along with authorization enforcement.
+ * @requires koa-router
+ * @requires koa-bodyparser
+ * @requires models/reviews
+ * @requires controllers/auth
+ * @requires permissions/reviews
+ * @requires controllers/validation
+ * @see models/reviews for database operations
+ * @see controllers/auth for auth middleware
+ * @see permissions/reviews for permissions
+ * @see controllers/validation for validation functions
+ */
+
 const Router = require('koa-router'); // Import the koa-router (to parse request bodies)
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/reviews'}); // Define the route prefix
@@ -16,7 +31,12 @@ router.get('/:id([0-9]{1,})', getReviewsByBookId);
 router.put('/:id([0-9]{1,})', bodyParser(), auth, validateReviewUpdate, updateReview);  
 router.del('/:id([0-9]{1,})', auth, deleteReview);  
 
-// Function to get all the reviews
+/** Function to get all the reviews
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the reviews
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getAll(ctx){  
   try {
     let reviews = await model.getAll();
@@ -34,7 +54,12 @@ async function getAll(ctx){
   }
 }  
 
-// Function to get all the reviews for a book using its id
+/** Function to get all the reviews for a book using its id
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the reviews
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getReviewsByBookId(ctx) {
   try {
     let bookId = ctx.params.id;
@@ -53,7 +78,12 @@ async function getReviewsByBookId(ctx) {
   }
 }
 
-// Function to add a new author in the database
+/** Function to add a new author in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the author
+ * @throws {Error} Throws an error if the query fails
+ */
 async function createReview(ctx) {
   try {
     const permission = can.create(ctx.state.user);
@@ -78,7 +108,12 @@ async function createReview(ctx) {
   }
 }
 
-// Function to update a review in the database
+/** Function to update a review in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the review
+ * @throws {Error} Throws an error if the query fails
+ */
 async function updateReview(ctx) {
   try {
     const reviewId = ctx.params.id;
@@ -110,7 +145,12 @@ async function updateReview(ctx) {
   }
 }
 
-// Function to delete an review in the database
+/** Function to delete an review in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the review
+ * @throws {Error} Throws an error if the query fails
+ */
 async function deleteReview(ctx) {
   try {
     const reviewId = ctx.params.id;

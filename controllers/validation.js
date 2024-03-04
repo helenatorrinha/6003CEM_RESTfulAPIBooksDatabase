@@ -1,3 +1,9 @@
+/**
+ * A module to run JSON Schema based validation on request/response data.
+ * @module controllers/validation
+ * @see schemas/* for JSON Schema definition files
+ */
+
 const {Validator, ValidationError} = require('jsonschema');
 const { author: authorSchema, authorUpdate: authorUpdateSchema } = require('../schemas/author.json').definitions;
 const { book: bookSchema, bookUpdate: bookUpdateSchema } = require('../schemas/book.json').definitions;
@@ -7,6 +13,13 @@ const { user: userSchema, userUpdate: userUpdateSchema } = require('../schemas/u
 
 const v = new Validator();
 
+/** Validation function 
+ * @param {Object} ctx - Koa context object
+ * @param {Function} next - Koa next function
+ * @param {Object} schema - JSON Schema definition
+ * @returns {Promise} - Koa next function
+ * @throws {ValidationError} - Koa context object
+*/
 async function validate(ctx, next, schema) {
   const validationOptions = { 
     throwError: true,

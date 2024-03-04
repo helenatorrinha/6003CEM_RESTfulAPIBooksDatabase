@@ -1,4 +1,19 @@
 
+/**
+ * @module routes/books
+ * @description API routes for managing books, providing CRUD operations along with authorization enforcement.
+ * @requires koa-router
+ * @requires koa-bodyparser
+ * @requires models/books
+ * @requires controllers/auth
+ * @requires permissions/books
+ * @requires controllers/validation
+ * @see models/books for database operations
+ * @see controllers/auth for auth middleware
+ * @see permissions/books for permissions
+ * @see controllers/validation for validation functions
+ */
+
 const Router = require('koa-router'); // Import the koa-router (to parse request bodies)
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/books'}); // Define the route prefix
@@ -17,7 +32,12 @@ router.get('/:id([0-9]{1,})', getById);
 router.put('/:id([0-9]{1,})', bodyParser(), auth, validateBookUpdate, updateBook);  
 router.del('/:id([0-9]{1,})', auth, deleteBook);  
 
-// Function to get all the books
+/** Function to get all the books
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the books
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getAll(ctx){  
   try {
     let books = await model.getAll();
@@ -35,7 +55,12 @@ async function getAll(ctx){
   }
 }  
 
-// Function to get a single book by its id
+/** Function to get a single book by its id
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the book
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getById(ctx) {
   try {
     let id = ctx.params.id;
@@ -54,7 +79,12 @@ async function getById(ctx) {
   }
 }
 
-// Function to add a new book in the database
+/** Function to add a new book in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the book
+ * @throws {Error} Throws an error if the query fails
+ */
 async function createBook(ctx) {
   try {
     const permission = can.create(ctx.state.user);
@@ -80,7 +110,12 @@ async function createBook(ctx) {
   }
 }
 
-// Function to update a book in the database
+/** Function to update a book in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the book
+ * @throws {Error} Throws an error if the query fails
+ */
 async function updateBook(ctx) {
   try {
     const permission = can.update(ctx.state.user);
@@ -104,10 +139,14 @@ async function updateBook(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the book' };
   }
-  
 }
 
-// Function to delete a book in the database
+/** Function to delete a book in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the book
+ * @throws {Error} Throws an error if the query fails
+ */
 async function deleteBook(ctx) {
   try {
     const permission = can.delete(ctx.state.user);

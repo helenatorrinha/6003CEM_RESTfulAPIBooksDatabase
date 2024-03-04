@@ -1,3 +1,18 @@
+/**
+ * @module routes/authors
+ * @description API routes for managing authors, providing CRUD operations along with authorization enforcement.
+ * @requires koa-router
+ * @requires koa-bodyparser
+ * @requires models/authors
+ * @requires controllers/auth
+ * @requires permissions/authors
+ * @requires controllers/validation
+ * @see models/authors for db operations
+ * @see controllers/auth for auth middleware
+ * @see permissions/authors for permissions
+ * @see controllers/validation for validation functions
+ */
+
 const Router = require('koa-router'); // Import the koa-router (to parse request bodies)
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/authors'}); // Define the route prefix
@@ -16,7 +31,12 @@ router.get('/:id([0-9]{1,})', getById);
 router.put('/:id([0-9]{1,})', bodyParser(), auth, validateAuthorUpdate, updateAuthor);  
 router.del('/:id([0-9]{1,})', auth, deleteAuthor);  
 
-// Function to get all the authors
+/** Function to get all the authors in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the authors
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getAll(ctx){  
   try {
     let authors = await model.getAll();
@@ -34,7 +54,12 @@ async function getAll(ctx){
   }  
 }  
 
-// Function to get a single author by its id
+/** Function to get a single author by its id
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the author
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getById(ctx) {
   try {
     let id = ctx.params.id;
@@ -50,10 +75,14 @@ async function getById(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the user' };
   }
-  
 }
 
-// Function to add a new author in the database
+/** Function to add a new author in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the author
+ * @throws {Error} Throws an error if the query fails
+ */
 async function createAuthor(ctx) {
   try {
     const permission = can.create(ctx.state.user);
@@ -76,10 +105,14 @@ async function createAuthor(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the user' };
   }
-  
 }
 
-// Function to update an author in the database
+/** Function to update an author in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the author
+ * @throws {Error} Throws an error if the query fails
+ */
 async function updateAuthor(ctx) {
   try {
     const permission = can.update(ctx.state.user);
@@ -106,7 +139,12 @@ async function updateAuthor(ctx) {
   
 }
 
-// Function to delete an author in the database
+/** Function to delete an author in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the author
+ * @throws {Error} Throws an error if the query fails
+ */
 async function deleteAuthor(ctx) {
   try {
     const permission = can.delete(ctx.state.user);
@@ -129,7 +167,6 @@ async function deleteAuthor(ctx) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the user' };
   }
-  
 }
 
 module.exports = router;

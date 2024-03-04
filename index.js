@@ -1,3 +1,18 @@
+/**
+ * @file index.js
+ * @module index
+ * @description The main entry point for the application
+ * @requires koa
+ * @requires routes/authors
+ * @requires routes/books
+ * @requires routes/genres
+ * @requires routes/reviews
+ * @requires routes/user
+ * @requires routes/special
+ * @requires config
+ * @requires Koa
+ */
+
 const Koa = require('koa');
 const app = new Koa();
 

@@ -1,3 +1,18 @@
+/**
+ * @module routes/genres
+ * @description API routes for managing genres, providing CRUD operations along with authorization enforcement.
+ * @requires koa-router
+ * @requires koa-bodyparser
+ * @requires models/genres
+ * @requires controllers/auth
+ * @requires permissions/genres
+ * @requires controllers/validation
+ * @see models/genres for database operations
+ * @see controllers/auth for auth middleware
+ * @see permissions/genres for permissions
+ * @see controllers/validation for validation functions
+ */
+
 const Router = require('koa-router'); // Import the koa-router (to parse request bodies)
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
 const router = Router({prefix: '/api/v1/genres'}); // Define the route prefix
@@ -16,7 +31,12 @@ router.get('/:id([0-9]{1,})', getById);
 router.put('/:id([0-9]{1,})', bodyParser(), auth, validateGenreUpdate, updateGenre);  
 router.del('/:id([0-9]{1,})', auth, deleteGenre);  
 
-// Function to get all the genres
+/** Function to get all the genres
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the genres
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getAll(ctx){  
   try {
     let genres = await model.getAll();
@@ -34,7 +54,12 @@ async function getAll(ctx){
   } 
 }  
 
-// Function to get a single genre by its id
+/** Function to get a single genre by its id
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the genre
+ * @throws {Error} Throws an error if the query fails
+ */
 async function getById(ctx) {
   try {
     let id = ctx.params.id;
@@ -53,7 +78,12 @@ async function getById(ctx) {
   }
 }
 
-// Function to add a new genre in the database
+/** Function to add a new genre in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the genre
+ * @throws {Error} Throws an error if the query fails
+ */
 async function createGenre(ctx) {
   try {
     const permission = can.create(ctx.state.user);
@@ -79,7 +109,12 @@ async function createGenre(ctx) {
   }
 }
 
-// Function to update an genre in the database
+/** Function to update an genre in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the genre
+ * @throws {Error} Throws an error if the query fails
+ */
 async function updateGenre(ctx) {
   try {
     const permission = can.create(ctx.state.user);
@@ -106,7 +141,12 @@ async function updateGenre(ctx) {
   }
 }
 
-// Function to delete an genre in the database
+/** Function to delete an genre in the database
+ * @async
+ * @param {object} ctx - The Koa request/response context object
+ * @returns {Promise} A promise to the genre
+ * @throws {Error} Throws an error if the query fails
+ */
 async function deleteGenre(ctx) {
   try {
     const permission = can.create(ctx.state.user);
