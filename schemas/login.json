@@ -4,7 +4,7 @@
         "login": {
             "id": "/login",
             "title": "Login",
-            "description": "login route",
+            "description": "Login credentials",
             "type": "object",
             "properties": {
                 "username": {
@@ -26,7 +26,7 @@
             "type": "object",
             "properties": {
                 "token": {
-                    "description": "jwt token",
+                    "description": "Json Web Token",
                     "type": "string"
                 }
             }            

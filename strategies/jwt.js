@@ -1,13 +1,18 @@
-const passport = require('passport');
+/**
+ * @module strategies/jwt
+ * @requires passport-jwt
+ * @requires models/users
+ * @requires config
+ */
 const JwtStrategy = require('passport-jwt').Strategy;
 const ExtractJwt = require('passport-jwt').ExtractJwt;
 const users = require('../models/users'); 
 const config = require('../config');
-const JWT_SECRET_KEY = config.jwtSecret 
 
+/** The options for the jwt strategy */
 const options = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: JWT_SECRET_KEY,
+  secretOrKey: config.jwtSecret,
 };
 
 /** checkJwt function called from auth to check jwt
@@ -18,22 +23,20 @@ const options = {
 */
 const checkJwt = async (jwtPayload, done) => {
   try {
-    console.log("jwtpayload");
-    console.log(jwtPayload);
-      const [user] = await users.findByUsername(jwtPayload.username);
-
-      if (!user || user.length === 0) {
-          console.log(`No user found with username ${jwtPayload.username}`); // not found
-          return done(null, false);
+      const [user] = await users.findByUsername(jwtPayload.username); // find user
+      if (!user || user.length === 0) // if no user found
+      {
+        console.log(`No user found with username ${jwtPayload.username}`); // not found
+        return done(null, false);
       }
       console.log(`Successfully authenticated user ${jwtPayload.username}`); // success
-      return done(null, user); // returns user to ctx, allows author id to be added to article
+      return done(null, user); // return user
   } catch (error) {
       console.error(`Error during authentication for user ${jwtPayload.username}`); // error
       return done(error);
   }
 }
 
-const strategy = new JwtStrategy(options, checkJwt);
+const strategy = new JwtStrategy(options, checkJwt); // create strategy
 module.exports = strategy;
 
