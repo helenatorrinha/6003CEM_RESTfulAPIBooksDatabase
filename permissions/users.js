@@ -20,7 +20,7 @@ const ac = new AccessControl(); // Create a new instance of the AccessControl cl
  * Also adding a condition to the read, update and delete permissions to check if the requester is the user.
 */
 ac.grant('user').condition({Fn:'EQUALS', args: {'requester':'$.owner'}}).execute('read')
-  .on('user', ['*', '!password']); // User can read all his data except the password
+  .on('user', ['*', '!password', '!role']); // User can read all his data except the password and role
 ac.grant('user').condition({Fn:'EQUALS', args: {'requester':'$.owner'}}).execute('update')
   .on('user', ['firstName', 'lastName','username', 'password', 'email', 'avatarURL']); // User can update its 'firstName', 'lastName','username', 'password', 'email', 'avatarURL' (can't update role)
 
@@ -33,8 +33,8 @@ ac.grant('user').condition({Fn:'EQUALS', args: {'requester':'$.owner'}}).execute
  * Also adding a condition to the delete permission to check if the requester is the user to prevent an admin to delete himself.
  
  */
-ac.grant('admin').execute('read').on('user'); // Admin can read any user
-ac.grant('admin').execute('read').on('users'); // Admin can read all users
+ac.grant('admin').execute('read').on('user', ['*', '!password']); // Admin can read any user
+ac.grant('admin').execute('read').on('users', ['*', '!password']); // Admin can read all users
 ac.grant('admin').execute('update').on('user'); // Admin can update any user
 ac.grant('admin').condition({Fn:'NOT_EQUALS', args:
 {'requester':'$.owner'}}).execute('delete').on('user'); // Admin can delete any user except himself

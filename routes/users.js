@@ -49,7 +49,7 @@ async function getAll(ctx) {
       const result = await model.getAll(); // Get all the users from the model
       if (result.length) { // If some result is returned
         ctx.status = 200; // OK
-        ctx.body = result; // Return the users
+        ctx.body = permission.filter(result); // Return the users
       } else {
         ctx.status = 404; // Not found
       }
@@ -79,7 +79,7 @@ async function getById(ctx) {
       let user = await model.getById(id); // Get the user from the model
       if (user.length) { // If some result is returned
         ctx.status = 200; // OK
-        ctx.body = user[0]; // Return the user
+        ctx.body = permission.filter(user[0]); // Return the user
       }
       else {
         ctx.status = 404; // Not found
