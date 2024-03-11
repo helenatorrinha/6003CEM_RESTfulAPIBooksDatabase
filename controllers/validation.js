@@ -34,12 +34,13 @@ async function validate(ctx, next, schema) {
     await next();
   } catch (error) {
     if (error instanceof ValidationError) {
-      ctx.body = error;
-      ctx.status = 400;      
+      console.error(error);
+      ctx.status = 400
+      ctx.body = error;  // this is the line you update
     } else {
       throw error;
     }
-  }
+  }  
 }
 
 /** Validate data against author schema */

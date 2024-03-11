@@ -16,10 +16,11 @@ const db = require('../helpers/database');
  * @throws {Error} Throws an error if the query fails
  */
 exports.getAll = async function getAll () {
-  let query = "SELECT * FROM books;";
+  let query = "SELECT book_id, title, books.author_id, firstName as author_firstName, lastName as author_lastName, books.genre_id, name as genre_name, publication_date, books.description, ISBN, imageURL FROM books, authors, genres where books.author_id = authors.author_id and books.genre_id= genres.genre_id;";
   let data = await db.run_query(query);
   return data;
 }
+
 
 /** Gets a single book by its id  
  * @asyn
@@ -28,7 +29,7 @@ exports.getAll = async function getAll () {
  * @throws {Error} Throws an error if the query fails
  */
 exports.getById = async function getById (id) {
-  let query = "SELECT * FROM books WHERE book_id = ?";
+  let query = "SELECT book_id, title, books.author_id,  firstName as author_firstName, lastName as author_lastName, books.genre_id, name as genre_name, publication_date, books.description, ISBN, imageURL FROM books, authors, genres where books.author_id = authors.author_id and books.genre_id= genres.genre_id and books.book_id = ?";
   let values = [id];
   let data = await db.run_query(query, values);
   return data;
