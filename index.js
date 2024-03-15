@@ -25,13 +25,13 @@ const users = require('./routes/users.js');
 const special = require('./routes/special.js')
 const cors = require('@koa/cors');
 
+app.use(cors());
 app.use(authors.routes());
 app.use(books.routes());
 app.use(genres.routes());
 app.use(reviews.routes());
 app.use(users.routes());
 app.use(special.routes());
-app.use(cors());
 
 let port = process.env.PORT || 3030;
 
