@@ -84,29 +84,37 @@ async function getById(ctx) {
  * @param {object} ctx - The Koa request/response context object
  * @returns {Promise} A promise to the book
  * @throws {Error} Throws an error if the query fails
+ * @throws {Error} Throws an error if the author or genre is not found
+ * @returns {Promise<ResultSetHeader>} A promise to the result of the query
+ * @throws {Error} Throws an error if the query fails
  */
 async function createBook(ctx) {
   try {
     const permission = can.create(ctx.state.user);
-    if (!permission.granted) {
+    if (!permission.granted) { // If the user does not have permission to create a book
       ctx.status = 403; // Forbidden
       return;
     }
-    else { 
-      const body = ctx.request.body;
-      let result = await model.add(body);
-      if (result) {
-        ctx.status = 201; // Created
-        ctx.body = {ID: result.insertId}
-      }
-      else {
-        ctx.status = 400; // Bad request
-      }
+
+    const body = ctx.request.body;
+    let result = await model.add(body);
+    if (result.error) { // If the result has an error property
+      ctx.status = 400; // Bad request
+      ctx.body = { error: result.error };
+      return; 
     }
-  } 
-  catch (error) {
+
+    if (result.insertId) { // If result has an insertId (insertion was successful)
+      ctx.status = 201; // Created
+      ctx.body = { ID: result.insertId };
+    } else { 
+      ctx.status = 400; // Bad request
+      ctx.body = { error: 'Failed to add the book' };
+    }
+  } catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the book' };
+    console.error(error); // Log the error for debugging purposes
   }
 }
 

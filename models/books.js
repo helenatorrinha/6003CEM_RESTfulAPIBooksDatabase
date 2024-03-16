@@ -40,12 +40,36 @@ exports.getById = async function getById (id) {
  * @param {Object} book - The book object
  * @returns {Promise<ResultSetHeader>} A promise to the result of the query
  * @throws {Error} Throws an error if the query fails
+ * @throws {Error} Throws an error if the author or genre is not found
+ * @returns {Promise<ResultSetHeader>} A promise to the result of the query
+ * @throws {Error} Throws an error if the query fails
  */
-exports.add = async function add (book) {
+exports.add = async function add(book) {
+  let authorQuery = "SELECT author_id FROM authors WHERE firstname = ? AND lastname = ?";
+  let authorResults = await db.run_query(authorQuery, [book.firstname, book.lastname]);
+
+  let genreQuery = "SELECT genre_id FROM genres WHERE name = ?";
+  let genreResults = await db.run_query(genreQuery, [book.genre]);
+
+  // Check if authorResults and genreResults have entries
+  if (authorResults.length === 0) {
+    return { error: 'Author not found' };
+  }
+  if (genreResults.length === 0) {
+    return { error: 'Genre not found' };
+  }
+
+  book.author_id = authorResults[0].author_id;
+  book.genre_id = genreResults[0].genre_id;
+
+  delete book.firstname;
+  delete book.lastname;
+  delete book.genre;
+
   let query = "INSERT INTO books SET ?";
   let data = await db.run_query(query, book);
   return data;
-}
+};
 
 /** Updates a book in the database
  * @asyn

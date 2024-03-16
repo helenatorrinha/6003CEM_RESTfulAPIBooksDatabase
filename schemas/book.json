@@ -11,15 +11,19 @@
           "description": "The title of the book",
           "type": "string"
         },
-        "author_id": {
-          "description": "The author of the book",
-          "type": "integer"
+        "firstname": {
+          "description": "The firstname of the author the book",
+          "type": "string"
         },
-        "genre_id": {
+        "lastname": {
+          "description": "The lastname of the author of the book",
+          "type": "string"
+        },
+        "genre": {
           "description": "The genre of the book",
-          "type": "integer"
+          "type": "string"
         },
-        "publication_date": {
+        "publicationDate": {
           "description": "When the book was published",
           "type": "string",
           "format": "date"
@@ -39,9 +43,10 @@
       },
       "required": [
           "title",
-          "author_id",
-          "genre_id",
-          "publication_date",
+          "firstname",
+          "lastname",
+          "genre",
+          "publicationDate",
           "ISBN"
       ],
       "additionalProperties": false
@@ -68,15 +73,19 @@
           "description": "The title of the book",
           "type": "string"
         },
-        "author_id": {
-          "description": "The author of the book",
-          "type": "integer"
+        "firstname": {
+          "description": "The firstname of the author the book",
+          "type": "string"
         },
-        "genre_id": {
+        "lastname": {
+          "description": "The lastname of the author of the book",
+          "type": "string"
+        },
+        "genre": {
           "description": "The genre of the book",
-          "type": "integer"
+          "type": "string"
         },
-        "publication_date": {
+        "publicationDate": {
           "description": "When the book was published",
           "type": "string",
           "format": "date"

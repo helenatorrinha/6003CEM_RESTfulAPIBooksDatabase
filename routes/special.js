@@ -24,7 +24,7 @@ const { validateLogin } = require('../controllers/validation'); // Import valida
 // Routes
 router.get('/', publicAPI);
 router.get('/private', auth, privateAPI);
-router.get('/login', bodyParser(), validateLogin, login);
+router.post('/login', bodyParser(), validateLogin, login);
 
 /** Function to return a public message
  * @param {object} ctx - The Koa request/response context object
