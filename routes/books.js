@@ -93,6 +93,7 @@ async function createBook(ctx) {
     const permission = can.create(ctx.state.user);
     if (!permission.granted) { // If the user does not have permission to create a book
       ctx.status = 403; // Forbidden
+      ctx.body = { error: 'You are not authorized to add a book' };
       return;
     }
 
