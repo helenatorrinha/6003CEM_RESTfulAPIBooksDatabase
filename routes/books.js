@@ -65,11 +65,12 @@ async function getById(ctx) {
   try {
     let id = ctx.params.id;
     let book = await model.getById(id);
-    if (book.length) {
+    if (book) {
       ctx.status = 200; // OK
-      ctx.body = book[0];
+      ctx.body = book;
     }
     else {
+      console.log("here4")
       ctx.status = 404; // Not found
     }
   } 
