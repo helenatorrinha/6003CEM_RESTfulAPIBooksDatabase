@@ -70,7 +70,6 @@ async function getById(ctx) {
       ctx.body = book;
     }
     else {
-      console.log("here4")
       ctx.status = 404; // Not found
     }
   } 

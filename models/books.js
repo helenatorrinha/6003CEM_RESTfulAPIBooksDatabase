@@ -28,12 +28,6 @@ exports.getAll = async function getAll () {
  * @returns {Promise<Array>} A promise to the book
  * @throws {Error} Throws an error if the query fails
  */
-// exports.getById = async function getById (id) {
-//   let query = "SELECT book_id, title, books.author_id,  firstName as author_firstName, lastName as author_lastName, books.genre_id, name as genre_name, publicationDate, books.description, ISBN, imageURL FROM books, authors, genres where books.author_id = authors.author_id and books.genre_id= genres.genre_id and books.book_id = ?";
-//   let values = [id];
-//   let data = await db.run_query(query, values);
-//   return data;
-// }
 exports.getById = async function getById(id) {
   let query = `
     SELECT 
@@ -59,7 +53,6 @@ exports.getById = async function getById(id) {
     if (book.publicationDate) {
       book.publicationDate = book.publicationDate.toISOString ? book.publicationDate.toISOString().split('T')[0] : book.publicationDate.split('T')[0];
     } 
-    console.log(book)
     return book;
   } else {
     return null; 
@@ -110,11 +103,39 @@ exports.add = async function add(book) {
  * @returns {Promise<ResultSetHeader>} A promise to the result of the query
  * @throws {Error} Throws an error if the query fails
  */
-exports.update = async function update (book, id) {
-  let query = "UPDATE books SET ? WHERE book_id = ?;";
-  let data = await db.run_query(query, [book, id]);
-  return data.affectedRows;
-}
+exports.update = async function update(book, id) {
+  let genreQuery = "SELECT genre_id FROM genres WHERE name = ?";
+  let genreResult = await db.run_query(genreQuery, [book.genre]);
+  if (genreResult.length === 0) {
+    throw new Error('Genre not found');
+  }
+  let genreId = genreResult[0].genre_id;
+
+  //Fetch the author_id based on the author's first and last name
+  let authorQuery = "SELECT author_id FROM authors WHERE firstName = ? AND lastName = ?";
+  let authorResult = await db.run_query(authorQuery, [book.firstname, book.lastname]);
+  if (authorResult.length === 0) {
+    throw new Error('Author not found');
+  }
+  let authorId = authorResult[0].author_id;
+
+  // Update the book object with the genre_id and author_id
+  let updateBook = {
+    title: book.title,
+    genre_id: genreId,
+    author_id: authorId,
+    description: book.description,
+    ISBN: book.ISBN,
+    imageURL: book.imageURL
+  };
+
+  console.log(updateBook);
+
+  // Update the book in the books table
+  let updateQuery = "UPDATE books SET ? WHERE book_id = ?";
+  let updateResult = await db.run_query(updateQuery, [updateBook, id]);
+  return updateResult.affectedRows;
+};
 
 /** Deletes a book in the database
  * @asyn

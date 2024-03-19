@@ -72,8 +72,13 @@ async function login(ctx) {
     }
     // If the user exists and the password is correct, create a JWT token
     const accessToken = jwt.sign({ user_id: user.user_id, username: user.username }, config.jwtSecret, { expiresIn: '1h' }); // Create the token
-    ctx.body = { accessToken }; // Return the token
-    ctx.status = 200; // OK
+    const { user_id, username, email, role } = user;
+		const links = {
+			self: `/users/${user_id}`
+		};
+		ctx.body = { user_id, username, email, role, accessToken, links };
+		ctx.status = 200; // OK
+
   } 
   catch (error) {
     console.error('Error during login:', error);
