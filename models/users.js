@@ -59,6 +59,10 @@ exports.add = async function add (user) {
  * @throws {Error} Throws an error if the query fails
  */
 exports.update = async function update (user, id) {
+  if (user.password){
+    user.password = await bcrypt.hash(user.password, saltRounds)
+  }
+  
   let query = "UPDATE users SET ? WHERE user_id = ?;";
   let data = await db.run_query(query, [user, id]);
   return data.affectedRows;
