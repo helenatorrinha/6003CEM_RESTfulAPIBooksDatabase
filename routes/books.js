@@ -16,10 +16,12 @@
 
 const Router = require('koa-router'); // Import the koa-router (to parse request bodies)
 const bodyParser = require('koa-bodyparser'); // Import the koa-bodyparser
-const router = Router({prefix: '/api/v1/books'}); // Define the route prefix
 const model = require('../models/books');
 const can = require('../permissions/books');
 const auth = require('../controllers/auth');
+
+const prefix = '/api/v1/books';
+const router = Router({prefix : prefix}); // Define the route prefix
 
 // Validation functions
 const { validateBook } = require('../controllers/validation');
@@ -42,6 +44,12 @@ async function getAll(ctx){
   try {
     let books = await model.getAll();
     if (books.length) {
+      
+      //hateoas
+      books[0].links = {
+        author: `${ctx.protocol}://${ctx.host}/api/v1/authors/${books[0].author_id}`,
+        genre: `${ctx.protocol}://${ctx.host}/api/v1/genres/${books[0].genre_id}`
+      }
       ctx.status = 200; // OK
       ctx.body = books;
     } 
@@ -66,6 +74,12 @@ async function getById(ctx) {
     let id = ctx.params.id;
     let book = await model.getById(id);
     if (book) {
+
+      //hateoas
+      book.links = {
+        author: `${ctx.protocol}://${ctx.host}/api/v1/authors/${book.author_id}`,
+        genre: `${ctx.protocol}://${ctx.host}/api/v1/genres/${book.genre_id}`
+      }
       ctx.status = 200; // OK
       ctx.body = book;
     }

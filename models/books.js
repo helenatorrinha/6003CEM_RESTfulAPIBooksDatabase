@@ -33,8 +33,10 @@ exports.getById = async function getById(id) {
     SELECT 
       books.book_id, 
       books.title, 
+      authors.author_id, 
       authors.firstName AS author_firstName, 
       authors.lastName AS author_lastName, 
+      genres.genre_id,  
       genres.name AS genre_name, 
       books.publicationDate, 
       books.description, 
@@ -58,7 +60,6 @@ exports.getById = async function getById(id) {
     return null; 
   }
 }
-
 
 /** Adds a new book in the database
  * @asyn
@@ -128,8 +129,6 @@ exports.update = async function update(book, id) {
     ISBN: book.ISBN,
     imageURL: book.imageURL
   };
-
-  console.log(updateBook);
 
   // Update the book in the books table
   let updateQuery = "UPDATE books SET ? WHERE book_id = ?";
