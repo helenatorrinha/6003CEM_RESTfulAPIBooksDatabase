@@ -29,7 +29,7 @@ const checkJwt = async (jwtPayload, done) => {
         console.log(`No user found with username ${jwtPayload.username}`); // not found
         return done(null, false);
       }
-      // success
+      console.log(`Successfully authenticated with username ${jwtPayload.username}`);// success
       return done(null, user); // return user
   } catch (error) {
       console.error(`Error during authentication for user ${jwtPayload.username}`); // error

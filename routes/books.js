@@ -159,6 +159,7 @@ async function updateBook(ctx) {
     }
   } 
   catch (error) {
+    console.log(error)
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the book' };
   }

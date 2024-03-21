@@ -430,7 +430,7 @@ paths:
       responses:
         '403':
           description: Forbidden. A user can only update itself and admins can update any user.
-        '201':
+        '200':
           description: Update confirmation.
         '400':
           description: User not found in the database.

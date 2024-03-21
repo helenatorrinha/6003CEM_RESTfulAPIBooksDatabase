@@ -133,7 +133,7 @@ async function updateUser(ctx) {
       const body = ctx.request.body;
       let result = await model.update(body, id);
       if (result) {
-        ctx.status = 201; // Created
+        ctx.status = 200; // OK
         ctx.body = {message: "Updated Successful"}
       }
       else {
