@@ -123,7 +123,7 @@ async function updateAuthor(ctx) {
       const body = ctx.request.body;
       const id = ctx.params.id;
       let result = await model.update(body, id);
-      if (result) {
+      if (result.affectedRows) {
         ctx.status = 200; // OK
         ctx.body = {message: "Update successful"}
       }

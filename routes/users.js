@@ -162,7 +162,7 @@ async function deleteUser(ctx) {
     }
     else { 
       let result = await model.delete(id);
-      if (result) {
+      if (result.affectedRows) {
         ctx.status = 200; // OK 
         ctx.body = {message: "Delete successful"}
       }
