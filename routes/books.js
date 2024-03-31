@@ -60,6 +60,7 @@ async function getAll(ctx){
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the books' };
+    console.error('Error retrieving the books: ', error); // Log the error 
   }
 }  
 
@@ -90,6 +91,7 @@ async function getById(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the book' };
+    console.error('Error retrieving the book: ', error); // Log the error 
   }
 }
 
@@ -129,7 +131,7 @@ async function createBook(ctx) {
   } catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the book' };
-    console.error(error); // Log the error for debugging purposes
+    console.error('Error adding the book: ', error); // Log the error 
   }
 }
 
@@ -159,9 +161,9 @@ async function updateBook(ctx) {
     }
   } 
   catch (error) {
-    console.log(error)
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the book' };
+    console.error('Error updating the book: ',error); // Log the error 
   }
 }
 
@@ -192,6 +194,7 @@ async function deleteBook(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the book' };
+    console.error('Error deleting the book: ',error); // Log the error 
   }
 }
 

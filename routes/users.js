@@ -58,6 +58,7 @@ async function getAll(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the users' };
+    console.error('Error retrieving the users: ', error); // Log the error 
   }
 }
 
@@ -89,6 +90,7 @@ async function getById(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the user' };
+    console.error('Error retrieving the user: ', error); // Log the error 
   } 
 }
 
@@ -113,6 +115,7 @@ async function createUser(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the user' };
+    console.error('Error adding the user: ', error); // Log the error 
   }
 }
 
@@ -144,6 +147,7 @@ async function updateUser(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the user' };
+    console.error('Error updating the user: ', error); // Log the error 
   }
 }
 
@@ -174,6 +178,7 @@ async function deleteUser(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the user' };
+    console.error('Error deleting the user: ', error); // Log the error 
   }
 }
 module.exports = router;

@@ -51,6 +51,7 @@ async function getAll(ctx){
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the genres' };
+    console.error('Error retrieving the genres: ', error); // Log the error 
   } 
 }  
 
@@ -75,6 +76,7 @@ async function getById(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the genre' };
+    console.error('Error retrieving the genre: ', error); // Log the error 
   }
 }
 
@@ -106,6 +108,7 @@ async function createGenre(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the genre' };
+    console.error('Error adding the genre: ', error); // Log the error 
   }
 }
 
@@ -138,6 +141,7 @@ async function updateGenre(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the genre' };
+    console.error('Error updating the genre: ', error); // Log the error 
   }
 }
 
@@ -169,6 +173,7 @@ async function deleteGenre(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the genre' };
+    console.error('Error deleting the genre: ', error); // Log the error 
   }
 }
 

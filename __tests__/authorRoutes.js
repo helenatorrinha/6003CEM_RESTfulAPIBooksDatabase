@@ -53,7 +53,7 @@ describe('Authors API Operations', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.statusCode).toEqual(500);
-      expect(res.body).toHaveProperty('error', 'Failed to add the user');
+      expect(res.body).toHaveProperty('error', 'Failed to add the author');
     });
     //Test for invalid token
     it('should return 401 if token is invalid (not authorised/forbidden)', async () => {

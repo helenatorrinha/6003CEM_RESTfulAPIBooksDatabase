@@ -1,16 +1,29 @@
 const request = require('supertest');
 const app = require('../app');
 
-// Function to log in and get token
+/**
+ * Logs in a user and retrieves their authentication token.
+ *
+ * @async
+ * @param {string} username - The username of the user.
+ * @param {string} password - The password of the user.
+ * @returns {Promise<string>} The authentication token of the logged-in user.
+ */
 async function loginUser(username, password) {
   const response = await request(app.callback())
     .post('/api/v1/login') 
     .send({ username, password });
-  
   return response.body.accessToken;
 }
 
-// Main function to create users and get their tokens
+/**
+ * Retrieves authentication tokens for admin and regular users using examples.
+ *
+ * @async
+ * @returns {Promise<Object>} An object containing authentication tokens for an example admin and regular user.
+ * @property {string} exampleAdminToken - The authentication token for the example admin user.
+ * @property {string} exampleUserToken - The authentication token for the example regular user.
+ */
 async function getTokens() {
  
   // Log in as both users to get their tokens

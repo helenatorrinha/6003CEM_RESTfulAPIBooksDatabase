@@ -68,16 +68,16 @@
         "additionalProperties": false
       },
       "authorUpdated": {
-          "id": "/authorUpdated",
-          "title": "Author Updated",
-          "description": "The confirmation of the update of the author's information",
-          "type": "object",
-          "properties": {
-              "id": {
-                  "description": "id of the updated author record",
-                  "type": "integer"
-              }
-          }
+        "id": "/authorUpdated",
+        "title": "Author Updated",
+        "description": "The confirmation of the update of the author's information",
+        "type": "object",
+        "properties": {
+            "id": {
+                "description": "id of the updated author record",
+                "type": "integer"
+            }
+        }
       }
     }
   }

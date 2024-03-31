@@ -48,9 +48,10 @@ async function getAll(ctx){
       ctx.status = 404; // Not found
     }
   }
-  catch (err) {
+  catch (error) {
     ctx.status = 500; // Internal server error
-    ctx.body = { error: 'Failed to retrieve the users' };
+    ctx.body = { error: 'Failed to retrieve the authors' };
+    console.error(error); // Log the error 
   }  
 }  
 
@@ -73,7 +74,8 @@ async function getById(ctx) {
     }
   } catch (error) {
     ctx.status = 500; // Internal server error
-    ctx.body = { error: 'Failed to retrieve the user' };
+    ctx.body = { error: 'Failed to retrieve the author' };
+    console.error('Error retrieving the author: ', error); // Log the error 
   }
 }
 
@@ -103,7 +105,8 @@ async function createAuthor(ctx) {
   } 
   catch (error) {
     ctx.status = 500; // Internal server error
-    ctx.body = { error: 'Failed to add the user' };
+    ctx.body = { error: 'Failed to add the author' };
+    console.error('Error adding the author: ', error); // Log the error 
   }
 }
 
@@ -134,9 +137,9 @@ async function updateAuthor(ctx) {
   } 
   catch (error) {
     ctx.status = 500; // Internal server error
-    ctx.body = { error: 'Failed to update the user' };
+    ctx.body = { error: 'Failed to update the author' };
+    console.error('Error updating the author: ', error); // Log the error 
   }
-  
 }
 
 /** Function to delete an author in the database
@@ -165,7 +168,8 @@ async function deleteAuthor(ctx) {
   } 
   catch (error) {
     ctx.status = 500; // Internal server error
-    ctx.body = { error: 'Failed to delete the user' };
+    ctx.body = { error: 'Failed to delete the author' };
+    console.error('Error deleting the author: ', error); // Log the error 
   }
 }
 

@@ -51,6 +51,7 @@ async function getAll(ctx){
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the reviews' };
+    console.error('Error retrieving the reviews: ', error); // Log the error 
   }
 }  
 
@@ -75,6 +76,7 @@ async function getReviewsByBookId(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to retrieve the reviews' };
+    console.error('Error retrieving the reviews: ', error); // Log the error 
   }
 }
 
@@ -105,6 +107,7 @@ async function createReview(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to add the review' };
+    console.error('Error adding the review: ', error); // Log the error 
   }
 }
 
@@ -142,6 +145,7 @@ async function updateReview(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to update the review' };
+    console.error('Error updating the review: ', error); // Log the error 
   }
 }
 
@@ -178,6 +182,7 @@ async function deleteReview(ctx) {
   catch (error) {
     ctx.status = 500; // Internal server error
     ctx.body = { error: 'Failed to delete the review' };
+    console.error('Error deleting the review: ', error); // Log the error 
   }
 }
 

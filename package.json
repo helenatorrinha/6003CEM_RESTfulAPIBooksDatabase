@@ -29,7 +29,7 @@
   },
   "scripts": {
     "test": "cross-env DB_DATABASE=test_db jest --testTimeout=10000",
-    "test:watch": "cross-env DB_DATABASE=test_db jest --watch",    
+    "test:watch": "cross-env DB_DATABASE=test_db jest --watch",
     "testDB:drop": "mysql --user=root --password=codio -e 'DROP DATABASE test_db;'",
     "testDB:create": "mysql --user=root --password=codio -e 'CREATE DATABASE test_db;'",
     "testDB:migrate": "mysqldump --user=root --password=codio 6003cem | mysql --user=root --password=codio test_db",
