@@ -1,4 +1,4 @@
-# 6003CEM Backend
+# 6003CEM Web API Development - Backend
 # RESTful API service for managing a books database that provides CRUD operations for books, authors, genres, reviews, and users, taking into consideration both regular users and administrators. 
 
 For Books, depending on the role, users can perform operations such as create, get, get by id, update, and delete book entries. 
